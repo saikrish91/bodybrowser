@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Browser</title>
+ <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Body Browser with three js to visualize human anatomy">
+    <meta name="author" content="sivakumar,saikrishan,koushik">
+
+    <title>Body Browser</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/full-slider.css" rel="stylesheet">
+<style>
+#left {
+	height:350px;
+    width:30;
+    padding:10px; 
+	background-color: yellow; 
+}
+#middle {
+	height:50;
+    width:30;
+    padding:10px; 
+}
+#right {
+	height:350px;
+    width:30;
+    padding:10px; 
+	
+}
+</style>
+<script src="js/jquery.min.js"></script>
+<script src="js/three.min.js"></script>
+<script src="js/ColladaLoader.js"></script>
+<script src="js/OBJLoader.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script type="text/javascript" src="js/modernizr.custom.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.map"></script>
+
+</head>
+<body id="divA">
+<div id="nav">
+<p>hi</p>
+</div>
+<div id="section">	
+</div>
+<script>
+	var scene, camera, renderer, skeletondae, bodydae, handdae, loader;
+	init();
+	animate();
+	function init() {
+		scene = new THREE.Scene();
+		var WIDTH = window.innerWidth,
+		HEIGHT = window.innerHeight;
+		WIDTH=WIDTH-200;
+		HEIGHT="500";
+		renderer = new THREE.WebGLRenderer({antialias:true});
+		renderer.setSize(WIDTH, HEIGHT);
+		document.getElementById("section").appendChild(renderer.domElement);
+		camera = new THREE.PerspectiveCamera(30, WIDTH / HEIGHT, 0.1, 10000);
+		camera.position.set(10,10,10);
+		scene.add(camera);
+		
+		window.addEventListener('resize', function() {
+			var WIDTH = window.innerWidth,
+			HEIGHT = window.innerHeight;
+			renderer.setSize(WIDTH, HEIGHT);
+			camera.aspect = WIDTH / HEIGHT;
+			camera.updateProjectionMatrix();
+		});
+		$("#divA").mousemove(function(e){
+			var ev= window.event;
+			//alert(ev.clientY);
+  	 	  var pageCoords = "( " + e.pageX + ", " + e.pageY + " )";
+   	  	  var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
+   	 	  $("span:first").text("( e.pageX, e.pageY ) - " + pageCoords);
+     	  $("span:last").text("( e.clientX, e.clientY ) - " + clientCoords);
+   	   });
+		var light = new THREE.PointLight(0xfffff3, 0.8);
+		light.position.set(-100,200,100);
+		scene.add(light);
+		var sphereSize = 1;
+		var pointLightHelper = new THREE.PointLightHelper( light, sphereSize );
+		scene.add( pointLightHelper );
+		var light2 = new THREE.PointLight(0xd7f0ff, 0.2);
+		light2.position.set(200,200,100);
+		scene.add(light2);
+		var sphereSize = 1;
+		var pointLightHelper2 = new THREE.PointLightHelper( light2, sphereSize );
+		scene.add( pointLightHelper2 );
+		var light3 = new THREE.PointLight(0xFFFFFF, 0.5);
+		light3.position.set(150,200,-100);
+		scene.add(light3);
+		var sphereSize = 1;
+		var pointLightHelper3 = new THREE.PointLightHelper( light3, sphereSize );
+		scene.add( pointLightHelper3 );
+		loader = new THREE.ColladaLoader();
+		loader.options.convertUpAxis = true;
+		loader.load( 'images/girl-dae/girl.dae', function ( collada ) {
+			skeletondae = collada.scene;
+			var skin = collada.skins[ 0 ];
+			skeletondae.position.set(0,-3,0);
+			skeletondae.scale.set(5,5,5);
+			scene.add(skeletondae);
+		});
+		controls = new THREE.OrbitControls(camera, renderer.domElement);				
+	}
+
+
+
+	function animate() {
+
+		requestAnimationFrame(animate);
+		renderer.render(scene, camera);
+		controls.update();
+
+	}
+</script>
+<script type="text/javascript" src="js/retina.js"></script> 
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script> 
+<script type="text/javascript" src="js/smoothscroll.js"></script> 
+
+ <style>
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px;
+}
+#section {
+    width:50px;
+    float:left;
+}
+</style> 
+
+</body>
+</html>
